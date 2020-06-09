@@ -1,6 +1,0 @@
-module Pods_CustomFontExample_CustomFontExampleTests {
-  umbrella header "Pods-CustomFontExample-CustomFontExampleTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
