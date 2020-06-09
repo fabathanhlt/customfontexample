@@ -1,0 +1,6 @@
+module Pods_CustomFontExample {
+  umbrella header "Pods-CustomFontExample-umbrella.h"
+
+  export *
+  module * { export * }
+}
