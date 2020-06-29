@@ -6,23 +6,6 @@ import LoginScreen from '../scenes/login';
 import HomeScreen from '../scenes/home';
 import AppColors from '../assets/colors';
 const Stack = createStackNavigator();
-function MainStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          title: 'Home',
-          headerStyle: styles.mainHeader,
-          headerShown: false,
-          headerLeft: () => <View />,
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 function MyStack() {
   return (
     <Stack.Navigator>
@@ -43,13 +26,15 @@ function MyStack() {
         }}
       />
       <Stack.Screen
-        name="MainNavigation"
-        component={MainStack}
+        name="HomeScreen"
+        component={HomeScreen}
         options={{
+          title: 'Home',
           headerShown: false,
           gestureEnabled: false,
+          headerStyle: styles.mainHeader,
+          headerLeft: () => <View />,
           headerBackImage: <Image />,
-          headerLeft: <View />,
         }}
       />
     </Stack.Navigator>

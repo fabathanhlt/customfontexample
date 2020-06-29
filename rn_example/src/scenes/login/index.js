@@ -40,8 +40,8 @@ function LoginScreen({props, navigation}) {
         auth()
           .signInWithCredential(appleCredential)
           .then(userCredential => {
-            console.log('Apple login successful');
-            goToHomeScreen(userCredential.user.email);
+            const {email} = userCredential.user;
+            goToHomeScreen(email);
             //Do something here
           })
           .catch(error => {
@@ -54,7 +54,7 @@ function LoginScreen({props, navigation}) {
   }
 
   function goToHomeScreen(userName) {
-    navigation.navigate('HomeScreen', {
+    currentNavigation.navigate('HomeScreen', {
       userName: userName,
     });
   }

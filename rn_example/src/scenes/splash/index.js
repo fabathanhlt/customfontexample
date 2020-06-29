@@ -20,11 +20,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignContent: 'center',
     backgroundColor: 'white',
   },
   logo: {
     width: 160,
     height: 75,
+    alignSelf: 'center',
   },
 });
 
