@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sample_sign_in_apple_id/home_page.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart'; 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:crypto/crypto.dart';
+import 'package:sample_sign_in_apple_id/utils.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,33 +35,33 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   
-
-  void _onClickAuthorizeApple() async {
-    String hostUri = 'faba-production.firebaseapp.com';
-    String clientId = 'com.faba.loginappleid';
+  void _onClickAuthorizeApple() async { 
+    String nonce = "helloworld";
+    String sha256Nonce = Utils.getSHA256(nonce); 
     try {
       final credential = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
         ],  
+        nonce: sha256Nonce,
       ); 
       if (credential.identityToken == null) {
         throw("Can't get identity Token");
       }
-        String identityToken = credential.identityToken; 
-        PlatformOAuthCredential authCredential = PlatformOAuthCredential( 
-          providerId: "apple.com",
-          idToken: identityToken,
-        );
-        final firebaseUser = await FirebaseAuth.instance.signInWithCredential(authCredential);
-        if (firebaseUser.user == null) {
+        String identityToken = credential.identityToken;  
+       OAuthProvider oAuthProvider = OAuthProvider(providerId: "apple.com");
+       final AuthCredential authCredential = oAuthProvider.getCredential(idToken: identityToken, rawNonce: nonce);
+
+        print('authCredential $authCredential');
+        final AuthResult authResult = await FirebaseAuth.instance.signInWithCredential(authCredential);
+        if (authResult.user == null) {
           throw("Can't get user firebase");
         }
          Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => HomePage(firebaseUser.user.email)),
+          MaterialPageRoute<void>(builder: (_) => HomePage(credential.email)),
         );
     } catch (error) {
-      print('${error}');
+      print('$error');
     }
      
   }
